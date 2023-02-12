@@ -1,20 +1,58 @@
 import datetime
-from . import cafe, errors
+import cafe, errors
 
+class Friends():
 
-def go_to_cafe(friends: list, cafe: cafe.Cafe):
-    todays_date = datetime.date.today()
+    def __init__(self, friend: dict):
+        self.vaccine = friend["vaccine"]
+        self.wearing_a_mask = friend["wearing_a_mask"]
 
-    if not all(map(lambda x: todays_date <= x['vaccine']['expiration_date'] if x.get('vaccine') else False, friends)):
-        print('All friends should be vaccinated')
+    @property
+    def vaccine_expiration_date(self) -> datetime.date:
+        return self.vaccine["expiration_date"]
 
-    elif all(map(lambda x: x['wearing_a_mask'], friends)) is False:
-        masks_to_buy = 0
-        for friend_mask in list(map(lambda x: x['wearing_a_mask'], friends)):
-            if friend_mask is False:
-                masks_to_buy += 1
-        print(f'Friends should buy {masks_to_buy} masks')
+    try:
+        def go_to_cafe(friends: list, cafe: cafe.Cafe):
 
-    else:
-        print(f'Friends can go to {cafe}')
+            date_today = datetime.date.today()
 
+            vaccine_flag = True
+            wearing_a_mask_flag = True
+
+            masks_to_buy = 0
+
+            for friend in friends:
+                if friend.vaccine is None or date_today >= friend.vaccine_expiration_date:
+                    vaccine_flag = False
+
+                if friend.wearing_a_mask is False:
+                    wearing_a_mask_flag = False
+                    masks_to_buy += 1
+
+            if vaccine_flag == False:
+                print("All friends should be vaccinated")
+
+            elif wearing_a_mask_flag == False:
+                print(f'Friends should buy {masks_to_buy} masks')
+
+            else:
+                print(f'Friends can go to {cafe.name}')
+
+    except errors.VaccineError:
+        pass
+    except errors.NotWearingMaskError:
+        pass
+
+Friends.go_to_cafe(
+        (
+            [
+                {
+                    "name": "Ivan",
+                    "vaccine": {
+                        "name": "Moderna",
+                        "expiration_date": datetime.date.today()
+                        + datetime.timedelta(days=4),
+                    },
+                    "wearing_a_mask": True,
+                },]
+            ), cafe.Cafe("KFC"))

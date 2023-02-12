@@ -1,16 +1,17 @@
 class VaccineError(Exception):
-    '''Родительский класс исключений'''
+    ''''''
     pass
 
-
 class NotVaccinatedError(VaccineError):
-    '''Класс исключения при отсутствии вакцинации'''
+    '''Exception class in the absence of vaccination'''
+
 
 
 class OutdatedVaccineError(VaccineError):
-    '''Класс исключения при просрочке сертификата о вакцинации'''
+    '''Exemption class for expired certificate of vaccination'''
+
 
 
 class NotWearingMaskError(Exception):
-    '''Класс исключения при отстутсвии маски у посетителя'''
+    '''Exception class when the visitor does not have a mask'''
 
