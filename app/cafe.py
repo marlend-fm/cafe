@@ -1,5 +1,5 @@
 import datetime
-from errors import VaccineError, NotVaccinatedError, OutdatedVaccineError, NotWearingMaskError
+from .errors import VaccineError, NotVaccinatedError, OutdatedVaccineError, NotWearingMaskError
 
 
 class Visitor:
